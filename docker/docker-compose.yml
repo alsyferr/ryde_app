@@ -1,20 +1,31 @@
 version: '3.9'
 
 services:
+  app:
+    image: postgres 
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/ryde
+    depends_on:
+      - db
+
   db:
     image: postgres
     restart: always
-
     ports:
       - 5432:5432
-
     environment:
-      - POSTGRES_DB=testDB
+      - POSTGRES_DB=ryde
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+
+volumes:
+  pgdata:
